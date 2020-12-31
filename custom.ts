@@ -25,4 +25,16 @@ namespace tsuda_5th_grade_event {
             t5geStrip2.showColor(neopixel.colors(color));
         }
     }
+
+    //% block="%led|を消灯"
+    export function turnOffLED(led: LEDs) {
+        if (led == LEDs.LED1 || led == LEDs.BOTH_LEDS) {
+            t5geStrip1.clear()
+            t5geStrip1.show()
+        }
+        if (led == LEDs.LED2 || led == LEDs.BOTH_LEDS) {
+            t5geStrip2.clear()
+            t5geStrip2.show()
+        }
+    }
 }
