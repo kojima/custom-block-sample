@@ -1,7 +1,7 @@
 {
-    "name": "custom block sample",
+    "name": "津田小5年ブロック",
     "version": "1.6.0",
-    "description": "",
+    "description": "津田小5年パフォーマンス用LEDプログラミングキット",
     "dependencies": {
         "core": "*",
         "radio": "*",
