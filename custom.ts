@@ -1,38 +1,27 @@
-
-/**
- * このファイルを使って、独自の関数やブロックを定義してください。
- * 詳しくはこちらを参照してください：https://makecode.microbit.org/blocks/custom
- */
-
-enum MyEnum {
-    //% block="one"
-    One,
-    //% block="two"
-    Two
+enum LEDs {
+    //% block="LED 1"
+    LED1,
+    //% block="LED 2"
+    LED2
 }
 
 /**
- * カスタムブロック
+ * 津田小5年ブロック
  */
-//% weight=100 color=#f39c12 icon="\uf005"
-namespace custom {
-    /**
-     * TODO: ここに関数を記述してください
-     * @param n ここでパラメーターの説明をしてください。, eg: 5
-     * @param s ここでパラメーターの説明をしてください。, eg: "Hello"
-     * @param e ここでパラメーターの説明をしてください。
-     */
-    //% block
-    export function foo(n: number, s: string, e: MyEnum): void {
-        basic.showNumber(n);
+//% weight=70 color=#e67e22 icon="\uf005" block="津田小5年ブロック"
+namespace tsuda_5th_grade_event {
+    let strip1: neopixel.Strip = null;
+    let strip2: neopixel.Strip = null;
+
+    //% block="LEDセットアップ"
+    export function setupLEDs() {
+        strip1 = neopixel.create(DigitalPin.P0, 3, NeoPixelMode.RGB);
+        strip2 = neopixel.create(DigitalPin.P1, 3, NeoPixelMode.RGB);
     }
 
-    /**
-     * TODO: ここに関数を記述してください
-     * @param value ここで値の説明をしてください。, eg: 5
-     */
-    //% block
-    export function fib(value: number): number {
-        return value <= 1 ? value : fib(value -1) + fib(value - 2);
+    //% block="%led|を%color|で点灯"
+    export function litLED(led: LEDs, color: NeoPixelColors) {
+        let strip = led == LEDs.LED1 ? strip1 : strip2;
+        strip.showColor(neopixel.colors(color));
     }
 }
