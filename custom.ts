@@ -14,7 +14,7 @@ enum Offsets {
     TWO = 2,
 }
 
-enum Direction {
+enum RotateDirection {
     //% block="前"
     FORWRD = 1,
     //% block="後"
@@ -68,14 +68,16 @@ namespace tsuda_5th_grade_event {
         }
     }
 
-    //% block="%led|を%direction|へ%offset|個ずらす"
-    export function rotate(led: LEDs, offset: Offsets = Offsets.ONE, direction: Direction = Direction.FORWRD): void {
+    //% block="%led|を%direcastion|へ%offset|個ずらす"
+    export function rotate(led: LEDs, direction: RotateDirection, offset: Offsets): void {
+        const d = direction == RotateDirection.FORWRD ? 1 : -1
+        const o = offset == Offsets.ONE ? 1 : 2
         if (led == LEDs.LED1 || led == LEDs.BOTH_LEDS) {
-            t5geStrip1.rotate(offset * direction)
+            t5geStrip1.rotate(d * o)
             t5geStrip1.show()
         }
         if (led == LEDs.LED2 || led == LEDs.BOTH_LEDS) {
-            t5geStrip2.rotate(offset * direction)
+            t5geStrip2.rotate(d * o)
             t5geStrip2.show()
         }
     }
