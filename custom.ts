@@ -1,3 +1,24 @@
+enum NeoPixelColorsPlus {
+    //% block=赤
+    Red = 0xFF0000,
+    //% block=オレンジ
+    Orange = 0xFFA500,
+    //% block=黄
+    Yellow = 0xFFFF00,
+    //% block=緑
+    Green = 0x00FF00,
+    //% block=青
+    Blue = 0x0000FF,
+    //% block=あい
+    Indigo = 0x4b0082,
+    //% block=すみれ
+    Violet = 0x8a2be2,
+    //% block=紫
+    Purple = 0xFF00FF,
+    //% block=消
+    None = null
+}
+
 enum LEDs {
     //% block="LED 1"
     LED1,
@@ -31,38 +52,52 @@ let t5geStrip2: neopixel.Strip = neopixel.create(DigitalPin.P1, 3, NeoPixelMode.
 namespace tsuda_5th_grade_event {
 
     //% block="%led|を%color|で点灯"
-    export function litLED(led: LEDs, color: NeoPixelColors): void {
-        if (led == LEDs.LED1 || led == LEDs.BOTH_LEDS) {
-            t5geStrip1.showColor(neopixel.colors(color));
+    export function litLED(led: LEDs, color: NeoPixelColorsPlus): void {
+        if (color === NeoPixelColorsPlus.None) {
+            turnOffLED(led)
+        } else {
+            if (led === LEDs.LED1 || led === LEDs.BOTH_LEDS) {
+                t5geStrip1.showColor(color)
+            }
+            if (led === LEDs.LED2 || led === LEDs.BOTH_LEDS) {
+                t5geStrip2.showColor(color)
+            }
         }
-        if (led == LEDs.LED2 || led == LEDs.BOTH_LEDS) {
-            t5geStrip2.showColor(neopixel.colors(color));
+    }
+
+    function _setPixelColor(led: LEDs, offset: number, color: NeoPixelColorsPlus): void {
+        if (color === null) {
+            t5geStrip1.buf.fill(0, offset * 3, 3)
+        } else {
+            if (led === LEDs.LED1 || led === LEDs.BOTH_LEDS) {
+                t5geStrip1.setPixelColor(offset, color)
+            }
+            if (led === LEDs.LED2 || led === LEDs.BOTH_LEDS) {
+                t5geStrip2.setPixelColor(offset, color)
+            }
         }
     }
 
     //% block="%led|を%color1|%color2|%color3|で点灯"
-    export function litLEDWithColors(led: LEDs, color1: NeoPixelColors, color2: NeoPixelColors, color3: NeoPixelColors): void {
-        if (led == LEDs.LED1 || led == LEDs.BOTH_LEDS) {
-            t5geStrip1.setPixelColor(0, color1)
-            t5geStrip1.setPixelColor(1, color2)
-            t5geStrip1.setPixelColor(2, color3)
+    export function litLEDWithColors(led: LEDs, color1: NeoPixelColorsPlus, color2: NeoPixelColorsPlus, color3: NeoPixelColorsPlus): void {
+        _setPixelColor(led, 0, color1)
+        _setPixelColor(led, 1, color2)
+        _setPixelColor(led, 2, color3)
+        if (led === LEDs.LED1 || led === LEDs.BOTH_LEDS) {
             t5geStrip1.show()
         }
-        if (led == LEDs.LED2 || led == LEDs.BOTH_LEDS) {
-            t5geStrip2.setPixelColor(0, color1)
-            t5geStrip2.setPixelColor(1, color2)
-            t5geStrip2.setPixelColor(2, color3)
+        if (led === LEDs.LED2 || led === LEDs.BOTH_LEDS) {
             t5geStrip2.show()
         }
     }
 
     //% block="%led|を消灯"
     export function turnOffLED(led: LEDs): void {
-        if (led == LEDs.LED1 || led == LEDs.BOTH_LEDS) {
+        if (led === LEDs.LED1 || led === LEDs.BOTH_LEDS) {
             t5geStrip1.clear()
             t5geStrip1.show()
         }
-        if (led == LEDs.LED2 || led == LEDs.BOTH_LEDS) {
+        if (led === LEDs.LED2 || led === LEDs.BOTH_LEDS) {
             t5geStrip2.clear()
             t5geStrip2.show()
         }
@@ -70,13 +105,13 @@ namespace tsuda_5th_grade_event {
 
     //% block="%led|を%direcastion|へ%offset|個ずらす"
     export function rotate(led: LEDs, direction: RotateDirection, offset: Offsets): void {
-        const d = direction == RotateDirection.FORWRD ? 1 : -1
-        const o = offset == Offsets.ONE ? 1 : 2
-        if (led == LEDs.LED1 || led == LEDs.BOTH_LEDS) {
+        const d = direction === RotateDirection.FORWRD ? 1 : -1
+        const o = offset === Offsets.ONE ? 1 : 2
+        if (led === LEDs.LED1 || led === LEDs.BOTH_LEDS) {
             t5geStrip1.rotate(d * o)
             t5geStrip1.show()
         }
-        if (led == LEDs.LED2 || led == LEDs.BOTH_LEDS) {
+        if (led === LEDs.LED2 || led === LEDs.BOTH_LEDS) {
             t5geStrip2.rotate(d * o)
             t5geStrip2.show()
         }
