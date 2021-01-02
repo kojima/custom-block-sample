@@ -42,14 +42,14 @@ enum RotateDirection {
     BACKWARD = -1,
 }
 
-let t5geStrip1: neopixel.Strip = neopixel.create(DigitalPin.P0, 3, NeoPixelMode.RGB)
-let t5geStrip2: neopixel.Strip = neopixel.create(DigitalPin.P1, 3, NeoPixelMode.RGB)
+let t5gpStrip1: neopixel.Strip = neopixel.create(DigitalPin.P0, 3, NeoPixelMode.RGB)
+let t5gpStrip2: neopixel.Strip = neopixel.create(DigitalPin.P1, 3, NeoPixelMode.RGB)
 
 /**
  * 津田小5年ブロック
  */
 //% weight=70 color=#e67e22 icon="\uf005" block="津田小5年ブロック"
-namespace tsuda_5th_grade_event {
+namespace tsuda_5th_grade_performance {
 
     //% block="%led|を%color|で点灯"
     export function litLED(led: LEDs, color: NeoPixelColorsPlus): void {
@@ -57,23 +57,23 @@ namespace tsuda_5th_grade_event {
             turnOffLED(led)
         } else {
             if (led === LEDs.LED1 || led === LEDs.BOTH_LEDS) {
-                t5geStrip1.showColor(color)
+                t5gpStrip1.showColor(color)
             }
             if (led === LEDs.LED2 || led === LEDs.BOTH_LEDS) {
-                t5geStrip2.showColor(color)
+                t5gpStrip2.showColor(color)
             }
         }
     }
 
     function _setPixelColor(led: LEDs, offset: number, color: NeoPixelColorsPlus): void {
         if (color === null) {
-            t5geStrip1.buf.fill(0, offset * 3, 3)
+            t5gpStrip1.buf.fill(0, offset * 3, 3)
         } else {
             if (led === LEDs.LED1 || led === LEDs.BOTH_LEDS) {
-                t5geStrip1.setPixelColor(offset, color)
+                t5gpStrip1.setPixelColor(offset, color)
             }
             if (led === LEDs.LED2 || led === LEDs.BOTH_LEDS) {
-                t5geStrip2.setPixelColor(offset, color)
+                t5gpStrip2.setPixelColor(offset, color)
             }
         }
     }
@@ -84,22 +84,22 @@ namespace tsuda_5th_grade_event {
         _setPixelColor(led, 1, color2)
         _setPixelColor(led, 2, color3)
         if (led === LEDs.LED1 || led === LEDs.BOTH_LEDS) {
-            t5geStrip1.show()
+            t5gpStrip1.show()
         }
         if (led === LEDs.LED2 || led === LEDs.BOTH_LEDS) {
-            t5geStrip2.show()
+            t5gpStrip2.show()
         }
     }
 
     //% block="%led|を消灯"
     export function turnOffLED(led: LEDs): void {
         if (led === LEDs.LED1 || led === LEDs.BOTH_LEDS) {
-            t5geStrip1.clear()
-            t5geStrip1.show()
+            t5gpStrip1.clear()
+            t5gpStrip1.show()
         }
         if (led === LEDs.LED2 || led === LEDs.BOTH_LEDS) {
-            t5geStrip2.clear()
-            t5geStrip2.show()
+            t5gpStrip2.clear()
+            t5gpStrip2.show()
         }
     }
 
@@ -108,12 +108,12 @@ namespace tsuda_5th_grade_event {
         const d = direction === RotateDirection.FORWRD ? 1 : -1
         const o = offset === Offsets.ONE ? 1 : 2
         if (led === LEDs.LED1 || led === LEDs.BOTH_LEDS) {
-            t5geStrip1.rotate(d * o)
-            t5geStrip1.show()
+            t5gpStrip1.rotate(d * o)
+            t5gpStrip1.show()
         }
         if (led === LEDs.LED2 || led === LEDs.BOTH_LEDS) {
-            t5geStrip2.rotate(d * o)
-            t5geStrip2.show()
+            t5gpStrip2.rotate(d * o)
+            t5gpStrip2.show()
         }
     }
 }
