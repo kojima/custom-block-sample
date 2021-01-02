@@ -67,7 +67,12 @@ namespace tsuda_5th_grade_performance {
 
     function _setPixelColor(led: LEDs, offset: number, color: NeoPixelColorsPlus): void {
         if (color === null) {
-            t5gpStrip1.buf.fill(0, offset * 3, 3)
+            if (led === LEDs.LED1 || led === LEDs.BOTH_LEDS) {
+                t5gpStrip1.buf.fill(0, offset * 3, 3)
+            }
+            if (led === LEDs.LED2 || led === LEDs.BOTH_LEDS) {
+                t5gpStrip2.buf.fill(0, offset * 3, 3)
+            }
         } else {
             if (led === LEDs.LED1 || led === LEDs.BOTH_LEDS) {
                 t5gpStrip1.setPixelColor(offset, color)
