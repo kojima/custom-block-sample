@@ -58,7 +58,7 @@ let t5gpStrip2: neopixel.Strip = neopixel.create(DigitalPin.P1, 3, NeoPixelMode.
 namespace tsuda_5th_grade_performance {
 
     //% block="%led|を%color|で点灯"
-    //% weight=10
+    //% weight=100
     export function litLED(led: LEDs, color: NeoPixelColorsPlus): void {
         if (color === NeoPixelColorsPlus.None) {
             turnOffLED(led)
@@ -91,7 +91,7 @@ namespace tsuda_5th_grade_performance {
     }
 
     //% block="%led|を%color1|%color2|%color3|で点灯"
-    //% weight=20
+    //% weight=90
     export function litLEDWithColors(led: LEDs, color1: NeoPixelColorsPlus, color2: NeoPixelColorsPlus, color3: NeoPixelColorsPlus): void {
         _setPixelColor(led, 0, color1)
         _setPixelColor(led, 1, color2)
@@ -105,7 +105,7 @@ namespace tsuda_5th_grade_performance {
     }
 
     //% block="%led|を消灯"
-    //% weight=30
+    //% weight=80
     export function turnOffLED(led: LEDs): void {
         if (led === LEDs.LED1 || led === LEDs.BOTH_LEDS) {
             t5gpStrip1.clear()
@@ -118,7 +118,7 @@ namespace tsuda_5th_grade_performance {
     }
 
     //% block="%led|を%direcastion|へ%offset|個ずらす"
-    //% weight=40
+    //% weight=70
     export function rotate(led: LEDs, direction: RotateDirection, offset: Offsets): void {
         const d = direction === RotateDirection.FORWRD ? 1 : -1
         const o = offset === Offsets.ONE ? 1 : 2
