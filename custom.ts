@@ -57,9 +57,12 @@ let t5gpStrip2: neopixel.Strip = neopixel.create(DigitalPin.P1, 3, NeoPixelMode.
 //% weight=70 color=#e67e22 icon="\uf005" block="津田小5年ブロック"
 namespace tsuda_5th_grade_performance {
 
-    //% block="%led|を%color|で点灯"
+    /**
+     * LEDを指定した色で点灯します
+    */
+    //% block="%led|を%color=neopixel_colors_plus|で点灯"
     //% weight=100
-    export function litLED(led: LEDs, color: NeoPixelColorsPlus): void {
+    export function litLED(led: LEDs, color: number): void {
         if (color === NeoPixelColorsPlus.None) {
             turnOffLED(led)
         } else {
@@ -72,7 +75,7 @@ namespace tsuda_5th_grade_performance {
         }
     }
 
-    function _setPixelColor(led: LEDs, offset: number, color: NeoPixelColorsPlus): void {
+    function _setPixelColor(led: LEDs, offset: number, color: number): void {
         if (color === null) {
             if (led === LEDs.LED1 || led === LEDs.BOTH_LEDS) {
                 t5gpStrip1.buf.fill(0, offset * 3, 3)
@@ -90,9 +93,12 @@ namespace tsuda_5th_grade_performance {
         }
     }
 
-    //% block="%led|を%color1|%color2|%color3|で点灯"
+    /**
+     * LEDを別々の色で点灯します
+    */
+    //% block="%led|を%color1=neopixel_colors_plus|%color2=neopixel_colors_plus|%color3=neopixel_colors_plus|で点灯"
     //% weight=90
-    export function litLEDWithColors(led: LEDs, color1: NeoPixelColorsPlus, color2: NeoPixelColorsPlus, color3: NeoPixelColorsPlus): void {
+    export function litLEDWithColors(led: LEDs, color1: number, color2: number, color3: number): void {
         _setPixelColor(led, 0, color1)
         _setPixelColor(led, 1, color2)
         _setPixelColor(led, 2, color3)
@@ -104,6 +110,9 @@ namespace tsuda_5th_grade_performance {
         }
     }
 
+    /**
+     * LEDを消灯します
+    */
     //% block="%led|を消灯"
     //% weight=80
     export function turnOffLED(led: LEDs): void {
@@ -117,6 +126,9 @@ namespace tsuda_5th_grade_performance {
         }
     }
 
+    /**
+     * LEDの光っている位置をずらします
+    */
     //% block="%led|を%direcastion|へ%offset|個ずらす"
     //% weight=70
     export function rotate(led: LEDs, direction: RotateDirection, offset: Offsets): void {
@@ -130,5 +142,15 @@ namespace tsuda_5th_grade_performance {
             t5gpStrip2.rotate(d * o)
             t5gpStrip2.show()
         }
+    }
+
+    /**
+     * LEDの色を選択します
+    */
+    //% weight=1
+    //% blockId="neopixel_colors_plus" block="%color"
+    //% advanced=true
+    export function colors(color: NeoPixelColorsPlus): number {
+        return color;
     }
 }
