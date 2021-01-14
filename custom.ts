@@ -151,7 +151,7 @@ namespace tsuda_5th_grade_performance {
     //% blockId="neopixel_colors_plus" block="%color"
     //% advanced=true
     export function colors(color: NeoPixelColorsPlus): number {
-        return color;
+        return color
     }
 
     /**
@@ -164,6 +164,6 @@ namespace tsuda_5th_grade_performance {
         if (colorCode[0] === '#') {
             colorCode = colorCode.slice(1)
         }
-        return parseInt(colorCode, 16);
+        return parseInt(colorCode, 16)
     }
 }
