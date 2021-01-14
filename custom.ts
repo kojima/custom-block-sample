@@ -147,10 +147,23 @@ namespace tsuda_5th_grade_performance {
     /**
      * LEDの色を選択します
     */
-    //% weight=1
+    //% weight=10
     //% blockId="neopixel_colors_plus" block="%color"
     //% advanced=true
     export function colors(color: NeoPixelColorsPlus): number {
         return color;
+    }
+
+    /**
+     * カラーコード(#FF00FFのようなコード)を色に変換します
+    */
+    //% weight=5
+    //% block="カラーコード%colorCode|を色に変換"
+    //% advanced=true
+    export function convertColorCode(colorCode: string): number {
+        if (colorCode[0] === '#') {
+            colorCode = colorCode.slice(1)
+        }
+        return parseInt(colorCode, 16);
     }
 }
