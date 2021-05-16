@@ -2,25 +2,25 @@ enum NeoPixelColorsPlus {
     //% block=赤
     Red = 0xFF0000,
     //% block=オレンジ
-    Orange = 0xFFA500,
+    Orange = 0xFF6A00,
     //% block=黄
-    Yellow = 0xFFFF00,
+    Yellow = 0xFFE800,
     //% block=緑
-    Green = 0x00FF00,
+    Green = 0x006400,
     //% block=黄緑
-    YellowGreen = 0x9ACD32,
+    YellowGreen = 0x55FF00,
+    //% block=藍
+    Indigo = 0x101989,
     //% block=青
     Blue = 0x0000FF,
     //% block=水色
-    WaterBlue = 0x73B6FE,
-    //% block=藍
-    Indigo = 0x043C78,
-    //% block=すみれ
-    Violet = 0xEE82EE,
+    WaterBlue = 0x2255FF,
     //% block=紫
-    Purple = 0xFF00FF,
+    Purple = 0x7700FF,
     //% block=ピンク
-    Pink = 0xFF69B4,
+    Pink = 0xEE33EE,
+    //% block=白
+    White = 0xFFFFFF,
     //% block=消
     None = null
 }
@@ -153,7 +153,8 @@ namespace tsuda_5th_grade_performance {
                 basic.pause(30000 / bpm)
             }
         } else {
-            _litLED(paletteColors[currentMusicTitle][currentPalette])
+            if (currentPalette === null) _turnOffLED()
+            else _litLED(paletteColors[currentMusicTitle][currentPalette])
         }
     })
 
