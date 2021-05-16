@@ -54,9 +54,11 @@ const paletteColors: {[key: number]: Array<number>} = {
         NeoPixelColorsPlus.None,
         NeoPixelColorsPlus.None,
         NeoPixelColorsPlus.None,
+        NeoPixelColorsPlus.None,
         NeoPixelColorsPlus.None
     ],
     2: [
+        NeoPixelColorsPlus.None,
         NeoPixelColorsPlus.None,
         NeoPixelColorsPlus.None,
         NeoPixelColorsPlus.None,
@@ -84,31 +86,69 @@ namespace tsuda_5th_grade_performance {
     })
 
     input.onButtonPressed(Button.B, function () {
+        if (currentPalette <= 0) currentPalette = 6
         currentPalette = (currentPalette - 1) % 6
         _litLED(paletteColors[currentMusicTitle][currentPalette])
-        if (currentPalette === 1) currentPalette = 7
     })
 
     input.onButtonPressed(Button.AB, function () {
+        const tmpMode = mode
+        mode = 'switchingMusicTitle'
         currentPalette = Palette.Palette6
         if (currentMusicTitle === MusicTitle.STEP_AND_A_STEP) {
             currentMusicTitle = MusicTitle.GUNJO
             for (let i = 0; i < 3; i++) {
                 _turnOffLED()
-                basic.pause(100)
+                basic.pause(500)
                 _litLED(NeoPixelColors.Blue)
-                basic.pause(100)
+                basic.pause(500)
             }
         } else if (currentMusicTitle === MusicTitle.GUNJO) {
             currentMusicTitle = MusicTitle.STEP_AND_A_STEP
             for (let i = 0; i < 3; i++) {
                 _turnOffLED()
-                basic.pause(100)
+                basic.pause(500)
                 _litLED(NeoPixelColors.Red)
-                basic.pause(100)
+                basic.pause(500)
             }
         }
         _turnOffLED()
+        mode = tmpMode
+    })
+
+    radio.onReceivedString(function (receivedString) {
+        mode = receivedString
+        _litLED(paletteColors[currentMusicTitle][currentPalette])
+    })
+
+    radio.onReceivedValue(function (name, value) {
+        if (name == "bpm") {
+            bpm = value
+            serial.writeValue(name, bpm)
+        } else if (name == "led") {
+            serial.writeValue(name, value)
+            currentPalette = value
+        }
+    })
+
+    let bpm = 0
+    let mode = "AlwaysON"
+    radio.setGroup(1)
+    basic.forever(function () {
+        if (mode === 'switchingMusicTitle') return
+        if (bpm > 0) {
+            if (mode == "AlwaysON") {
+                _litLED(paletteColors[currentMusicTitle][currentPalette])
+            } else if (mode == "Blink") {
+                _litLED(paletteColors[currentMusicTitle][currentPalette])
+                basic.pause(30000 / bpm)
+                if (mode == "Blink") _turnOffLED()
+                else _litLED(paletteColors[currentMusicTitle][currentPalette])
+                basic.pause(30000 / bpm)
+            }
+        } else {
+            _litLED(paletteColors[currentMusicTitle][currentPalette])
+        }
     })
 
     /**
@@ -135,7 +175,9 @@ namespace tsuda_5th_grade_performance {
             t5gpStrip2.buf.fill(0, offset * 3, 3)
         } else {
             t5gpStrip1.setPixelColor(offset, color)
+            t5gpStrip1.show()
             t5gpStrip2.setPixelColor(offset, color)
+            t5gpStrip2.show()
         }
     }
 
