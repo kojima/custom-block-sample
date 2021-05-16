@@ -27,9 +27,9 @@ enum NeoPixelColorsPlus {
 
 enum MusicTitle {
     //% block="Step and a step"
-    STEP_AND_A_STEP = 'step_and_a_step',
+    STEP_AND_A_STEP = 1,
     //% block="群青"
-    GUNJO = 'gunjo'
+    GUNJO = 2
 }
 
 enum Palette {
@@ -47,34 +47,76 @@ enum Palette {
     Palette6 = 5,
 }
 
-type Dict = {[key: string]: [number]};
-const paletteColors: Dict = {};
+const paletteColors: {[key: number]: Array<number>} = {
+    1: [
+        NeoPixelColorsPlus.None,
+        NeoPixelColorsPlus.None,
+        NeoPixelColorsPlus.None,
+        NeoPixelColorsPlus.None,
+        NeoPixelColorsPlus.None,
+        NeoPixelColorsPlus.None
+    ],
+    2: [
+        NeoPixelColorsPlus.None,
+        NeoPixelColorsPlus.None,
+        NeoPixelColorsPlus.None,
+        NeoPixelColorsPlus.None,
+        NeoPixelColorsPlus.None,
+        NeoPixelColorsPlus.None
+    ]
+};
 
 let t5gpStrip1: neopixel.Strip = neopixel.create(DigitalPin.P0, 3, NeoPixelMode.RGB)
 let t5gpStrip2: neopixel.Strip = neopixel.create(DigitalPin.P1, 3, NeoPixelMode.RGB)
 
+let currentMusicTitle: MusicTitle = MusicTitle.STEP_AND_A_STEP
+let currentPalette: Palette = Palette.Palette6
+
 /**
  * 津田小5年ブロック
  */
-//% weight=70 color=#e67e22 icon="\uf005" block="津田小5年ブロック"
+//% weight=100 color=#e67e22 icon="\uf005" block="津田小5年ブロック"
 namespace tsuda_5th_grade_performance {
+
+    input.onButtonPressed(Button.A, function () {
+        currentPalette = (currentPalette + 1) % 6
+        _litLED(paletteColors[currentMusicTitle][currentPalette])
+    })
+
+    input.onButtonPressed(Button.B, function () {
+        currentPalette = (currentPalette - 1) % 6
+        _litLED(paletteColors[currentMusicTitle][currentPalette])
+        if (currentPalette === 1) currentPalette = 7
+    })
+
+    input.onButtonPressed(Button.AB, function () {
+        currentPalette = Palette.Palette6
+        if (currentMusicTitle === MusicTitle.STEP_AND_A_STEP) {
+            currentMusicTitle = MusicTitle.GUNJO
+            for (let i = 0; i < 3; i++) {
+                _turnOffLED()
+                basic.pause(100)
+                _litLED(NeoPixelColors.Blue)
+                basic.pause(100)
+            }
+        } else if (currentMusicTitle === MusicTitle.GUNJO) {
+            currentMusicTitle = MusicTitle.STEP_AND_A_STEP
+            for (let i = 0; i < 3; i++) {
+                _turnOffLED()
+                basic.pause(100)
+                _litLED(NeoPixelColors.Red)
+                basic.pause(100)
+            }
+        }
+        _turnOffLED()
+    })
 
     /**
      * パレットを指定した色に設定します
     */
-    //% block="%musicTitle=music_title|の%palette=palette|を%color=neopixel_colors_plus|にする"
+    //% block="$musicTitle の$palette を%color=neo_pixel_colors_plus|にする"
     //% weight=100
     export function setPaletteColor(musicTitle: MusicTitle, palette: Palette, color: number): void {
-        if (!paletteColors[musicTitle]) {
-            paletteColors[musicTitle] = [
-                NeoPixelColorsPlus.None,
-                NeoPixelColorsPlus.None,
-                NeoPixelColorsPlus.None,
-                NeoPixelColorsPlus.None,
-                NeoPixelColorsPlus.None,
-                NeoPixelColorsPlus.None
-            ]
-        }
         paletteColors[musicTitle][palette] = color
     }
 
@@ -112,15 +154,21 @@ namespace tsuda_5th_grade_performance {
         t5gpStrip2.show()
     }
 
-    function colors(color: NeoPixelColorsPlus): number {
+
+   /**
+     * LEDの色を選択します
+    */
+    //% blockId="neo_pixel_colors_plus" block="%color"
+    //% weight=90
+    export function colors(color: NeoPixelColorsPlus): number {
         return color
     }
 
     /**
      * カラーコード(#FF00FFのようなコード)を色に変換します
     */
-    //% weight=10
     //% block="カラーコード%colorCode|を色に変換"
+    //% weight=80
     export function convertColorCode(colorCode: string): number {
         let sanitized = false
         while (!sanitized) {
