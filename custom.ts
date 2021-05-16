@@ -72,7 +72,7 @@ let t5gpStrip1: neopixel.Strip = neopixel.create(DigitalPin.P0, 3, NeoPixelMode.
 let t5gpStrip2: neopixel.Strip = neopixel.create(DigitalPin.P1, 3, NeoPixelMode.RGB)
 
 let currentMusicTitle: MusicTitle = MusicTitle.STEP_AND_A_STEP
-let currentPalette: Palette = Palette.Palette6
+let currentPalette: Palette = null
 
 /**
  * 津田小5年ブロック
@@ -81,20 +81,26 @@ let currentPalette: Palette = Palette.Palette6
 namespace tsuda_5th_grade_performance {
 
     input.onButtonPressed(Button.A, function () {
-        currentPalette = (currentPalette + 1) % 6
+        if (currentPalette === null) currentPalette = Palette.Palette1
+        else currentPalette = (currentPalette + 1) % 6
         _litLED(paletteColors[currentMusicTitle][currentPalette])
     })
 
     input.onButtonPressed(Button.B, function () {
-        if (currentPalette <= 0) currentPalette = 6
-        currentPalette = (currentPalette - 1) % 6
+        if (currentPalette === null) {
+            currentPalette = Palette.Palette6
+        } else {
+            if (currentPalette <= 0) currentPalette = 6
+            currentPalette = (currentPalette - 1) % 6
+        }
         _litLED(paletteColors[currentMusicTitle][currentPalette])
     })
 
     input.onButtonPressed(Button.AB, function () {
+        if (mode === 'switchingMusicTitle') return
         const tmpMode = mode
         mode = 'switchingMusicTitle'
-        currentPalette = Palette.Palette6
+        currentPalette = null
         if (currentMusicTitle === MusicTitle.STEP_AND_A_STEP) {
             currentMusicTitle = MusicTitle.GUNJO
             for (let i = 0; i < 3; i++) {
