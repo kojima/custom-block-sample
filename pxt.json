@@ -1,6 +1,6 @@
 {
     "name": "津田小5年ブロック",
-    "version": "3.0.0",
+    "version": "3.1.0",
     "description": "津田小5年パフォーマンス用LEDプログラミングキット",
     "dependencies": {
         "core": "*",
