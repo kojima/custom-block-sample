@@ -146,10 +146,11 @@ namespace tsuda_5th_grade_performance {
     let bpm = 0
     let mode = "AlwaysON"
     radio.setGroup(1)
+    _turnOffLED()
     basic.forever(function () {
         if (mode === 'switchingMusicTitle') return
         if (bpm > 0) {
-            if (mode == "AlwaysON") {
+            if (mode == "AlwaysON" && currentPalette !== null) {
                 _litLED(paletteColors[currentMusicTitle][currentPalette])
             }
         } else {
