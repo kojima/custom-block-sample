@@ -134,6 +134,12 @@ namespace tsuda_5th_grade_performance {
         } else if (name == "led") {
             serial.writeValue(name, value)
             currentPalette = value
+        } else if (mode == "Blink" && name == "blink") {
+            if (value == 1) {
+                _litLED(paletteColors[currentMusicTitle][currentPalette])
+            } else {
+                _turnOffLED()
+            }
         }
     })
 
@@ -145,12 +151,6 @@ namespace tsuda_5th_grade_performance {
         if (bpm > 0) {
             if (mode == "AlwaysON") {
                 _litLED(paletteColors[currentMusicTitle][currentPalette])
-            } else if (mode == "Blink") {
-                _litLED(paletteColors[currentMusicTitle][currentPalette])
-                basic.pause(30000 / bpm)
-                if (mode == "Blink") _turnOffLED()
-                else _litLED(paletteColors[currentMusicTitle][currentPalette])
-                basic.pause(30000 / bpm)
             }
         } else {
             if (currentPalette === null) _turnOffLED()
