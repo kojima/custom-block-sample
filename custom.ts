@@ -96,30 +96,35 @@ namespace tsuda_5th_grade_performance {
         _litLED(paletteColors[currentMusicTitle][currentPalette])
     })
 
-    input.onButtonPressed(Button.AB, function () {
+    function blinkForMusicTitle() {
         if (mode === 'switchingMusicTitle') return
-        const tmpMode = mode
         mode = 'switchingMusicTitle'
         currentPalette = null
+        let blinkColor = null
+        if (currentMusicTitle === MusicTitle.STEP_AND_A_STEP) {
+            blinkColor = NeoPixelColors.Red
+        } else if (currentMusicTitle === MusicTitle.GUNJO) {
+            blinkColor = NeoPixelColors.Blue
+        }
+        if (blinkColor) {
+            for (let i = 0; i < 3; i++) {
+                _turnOffLED()
+                basic.pause(500)
+                _litLED(blinkColor)
+                basic.pause(500)
+            }
+            _turnOffLED()
+        }
+        mode = "AlwaysON"
+    }
+
+    input.onButtonPressed(Button.AB, function () {
         if (currentMusicTitle === MusicTitle.STEP_AND_A_STEP) {
             currentMusicTitle = MusicTitle.GUNJO
-            for (let i = 0; i < 3; i++) {
-                _turnOffLED()
-                basic.pause(500)
-                _litLED(NeoPixelColors.Blue)
-                basic.pause(500)
-            }
         } else if (currentMusicTitle === MusicTitle.GUNJO) {
             currentMusicTitle = MusicTitle.STEP_AND_A_STEP
-            for (let i = 0; i < 3; i++) {
-                _turnOffLED()
-                basic.pause(500)
-                _litLED(NeoPixelColors.Red)
-                basic.pause(500)
-            }
         }
-        _turnOffLED()
-        mode = tmpMode
+        blinkForMusicTitle()
     })
 
     radio.onReceivedString(function (receivedString) {
@@ -131,9 +136,13 @@ namespace tsuda_5th_grade_performance {
         if (name == "bpm") {
             bpm = value
             serial.writeValue(name, bpm)
+        } else if (name == "music") {
+            currentMusicTitle = value
+            blinkForMusicTitle()
         } else if (name == "led") {
             serial.writeValue(name, value)
-            currentPalette = value
+            currentMusicTitle = Math.floor(value / 10.0) | 0
+            currentPalette = value - currentMusicTitle * 10
         } else if (mode == "Blink" && name == "blink") {
             if (value == 1) {
                 _litLED(paletteColors[currentMusicTitle][currentPalette])
