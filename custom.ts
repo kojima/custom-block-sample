@@ -133,9 +133,10 @@ namespace tsuda_5th_grade_performance {
     })
 
     radio.onReceivedValue(function (name, value) {
-        if (name == "bpm") {
-            bpm = value
-            serial.writeValue(name, bpm)
+        if (name == "mode") {
+            if (value === 1) mode = 'AlwaysON'
+            else if (value === 2) mode = 'Blink'
+            _litLED(paletteColors[currentMusicTitle][currentPalette])
         } else if (name == "music") {
             currentMusicTitle = value
             blinkForMusicTitle()
