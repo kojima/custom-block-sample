@@ -127,11 +127,6 @@ namespace tsuda_5th_grade_performance {
         blinkForMusicTitle()
     })
 
-    radio.onReceivedString(function (receivedString) {
-        mode = receivedString
-        _litLED(paletteColors[currentMusicTitle][currentPalette])
-    })
-
     radio.onReceivedValue(function (name, value) {
         if (name == "mode") {
             if (value === 1) mode = 'AlwaysON'
@@ -159,13 +154,8 @@ namespace tsuda_5th_grade_performance {
     _turnOffLED()
     basic.forever(function () {
         if (mode === 'switchingMusicTitle') return
-        if (bpm > 0) {
-            if (mode == "AlwaysON" && currentPalette !== null) {
-                _litLED(paletteColors[currentMusicTitle][currentPalette])
-            }
-        } else {
-            if (currentPalette === null) _turnOffLED()
-            else _litLED(paletteColors[currentMusicTitle][currentPalette])
+        if (mode == "AlwaysON" && currentPalette !== null) {
+            _litLED(paletteColors[currentMusicTitle][currentPalette])
         }
     })
 
