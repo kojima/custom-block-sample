@@ -81,12 +81,16 @@ let currentPalette: Palette = null
 namespace tsuda_5th_grade_performance {
 
     input.onButtonPressed(Button.A, function () {
+        if (remoteControlled) return;
+
         if (currentPalette === null) currentPalette = Palette.Palette1
         else currentPalette = (currentPalette + 1) % 6
         _litLED(paletteColors[currentMusicTitle][currentPalette])
     })
 
     input.onButtonPressed(Button.B, function () {
+        if (remoteControlled) return;
+
         if (currentPalette === null) {
             currentPalette = Palette.Palette6
         } else {
@@ -119,6 +123,8 @@ namespace tsuda_5th_grade_performance {
     }
 
     input.onButtonPressed(Button.AB, function () {
+        if (remoteControlled) return;
+
         if (currentMusicTitle === MusicTitle.STEP_AND_A_STEP) {
             currentMusicTitle = MusicTitle.GUNJO
         } else if (currentMusicTitle === MusicTitle.GUNJO) {
@@ -127,12 +133,14 @@ namespace tsuda_5th_grade_performance {
         blinkForMusicTitle()
     })
 
+    let remoteControlled = false
     radio.onReceivedValue(function (name, value) {
         if (name == "mode") {
             if (value === 1) mode = 'AlwaysON'
             else if (value === 2) mode = 'Blink'
             _litLED(paletteColors[currentMusicTitle][currentPalette])
         } else if (name == "music") {
+            remoteControlled = true
             currentMusicTitle = value
             blinkForMusicTitle()
         } else if (name == "led") {
